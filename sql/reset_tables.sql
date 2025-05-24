@@ -10,4 +10,12 @@ CREATE UNLOGGED TABLE clientes_em_memoria (
   nome TEXT,
   saldo NUMERIC
 );
-CREATE TABLE log (operacao TEXT, id_cliente INT, nome TEXT, saldo NUMERIC);
+CREATE TABLE log (
+  operacao TEXT, 
+  id_cliente INT, 
+  nome TEXT, 
+  saldo NUMERIC,
+  transacao_id BIGINT,
+  status VARCHAR(20) DEFAULT 'pending' -- 'pending', 'commit', 'rollback'
+);
+ 
