@@ -15,3 +15,28 @@ gcc -o main  *.c -I/usr/include/postgresql -lpq
 ```
 ./main
 ```
+
+# Linha de teste 
+
+1. Criar o database e rodar o comando que cria/reseta as tabelas 
+```
+[./sql] \i ./restart.sql
+```
+
+2. Derrubar o postgres e restaurá-lo 
+
+```
+// encontrar PID
+ps -ef | grep postgres
+
+// Matar PG
+sudo kill -9 pid
+
+// Restaurar PG
+sudo service postgresql start
+```
+
+3. rodar o REDO 
+```
+[.] ./main
+```
