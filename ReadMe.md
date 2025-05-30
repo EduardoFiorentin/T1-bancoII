@@ -5,6 +5,12 @@ sudo apt-get update
 sudo apt-get install libpq-dev
 ```
 
+# Configuração da base de dados 
+Especificar como alterar o nome da base de dados no arquivo de configuração
+
+# Explicação da implementação
+Breve explicação da lógica 
+
 # Compilação 
 
 ```

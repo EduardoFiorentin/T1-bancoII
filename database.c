@@ -18,7 +18,7 @@ void make_redo(PGconn *conn) {
     // Executa a consulta ao log
 
     // Verifica quais transações sofrem redo
-    PGresult *redo = PQexec(conn, "select distinct transacao_id as tid from log order by tid");
+    PGresult *redo = PQexec(conn, "select distinct transacao_id as tid from log where status='committed' order by tid");
     // Verifica se a consulta foi bem-sucedida
     if (PQresultStatus(redo) != PGRES_TUPLES_OK) {
         printf("Error on log reading -- %s\n", PQerrorMessage(conn));

@@ -100,3 +100,11 @@ VALUES ('DELETE', 6, 'Teste delete 1', 400.00, :txid);
 UPDATE log set status = 'committed' where nome like '%Teste delet%';
 END;
 
+-- Resposta esperada 
+--  id |      nome      |  saldo  
+-- ----+----------------+---------
+--   1 | Ana Souza      |  650.00
+--   2 | Carlos Pereira | 1500.00
+--   3 | Maria Oliveira | 1200.00
+--   5 | Fernanda Costa |  900.00
+--   7 | Teste delete 2 |  400.00
