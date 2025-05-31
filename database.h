@@ -13,7 +13,9 @@
 #define TRANSACTION_ID      4
 #define STATUS              5
 
-PGconn      *start_connection();
-void        make_redo(PGconn *conn); 
+PGconn*         start_connection();
+void            make_redo(PGconn *conn); 
+PGresult*       enable_log_trigger(PGconn *conn);
+PGresult*       disable_log_trigger(PGconn *conn);
 
 #endif // DATABASE
