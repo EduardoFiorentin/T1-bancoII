@@ -9,7 +9,8 @@
 int main() 
 {   
     PGconn *conn = start_connection(); 
-    printf("Database connected! [User: %s, Database name: %s]\n", PQuser(conn), PQdb(conn));
+    printf("Conexão estabelecida! [User: %s, Database name: %s]\n", PQuser(conn), PQdb(conn));
+    printf("Iniciando REDO!\n");
     make_redo(conn);
     PQfinish(conn);
     return 0;

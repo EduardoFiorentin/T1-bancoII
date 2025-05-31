@@ -17,19 +17,27 @@ PGconn *start_connection() {
 void make_redo(PGconn *conn) {
     // Executa a consulta ao log
 
+    PGresult *disable_trigger = PQexec(conn, "ALTER TABLE clientes_em_memoria DISABLE TRIGGER tg_insert_log");
+    if (PQresultStatus(disable_trigger) != PGRES_COMMAND_OK) {
+        printf("Erro ao desabilitar trigger de inserção no log!\n");
+    }
+    
     // Verifica quais transações sofrem redo
     PGresult *redo = PQexec(conn, "select distinct transacao_id as tid from log where status='committed' order by tid");
+    
+    
     // Verifica se a consulta foi bem-sucedida
     if (PQresultStatus(redo) != PGRES_TUPLES_OK) {
-        printf("Error on log reading -- %s\n", PQerrorMessage(conn));
+        printf("Erro ao ler tabela de log! Programa finalizado. -- %s\n", PQerrorMessage(conn));
         PQclear(redo);
+        PQclear(disable_trigger);
         exit(1);
     }
     
     
     printf("Transações que sofrem REDO:\n");
     for (int i = 0; i < PQntuples(redo); i++) {
-        printf("\t-- %s\n", PQgetvalue(redo, i, 0));
+        printf("--\t%s\n", PQgetvalue(redo, i, 0));
     }
 
 
@@ -78,7 +86,13 @@ void make_redo(PGconn *conn) {
         }
     }
 
+    PGresult *enable_trigger = PQexec(conn, "ALTER TABLE clientes_em_memoria ENABLE TRIGGER tg_insert_log");
+    if (PQresultStatus(enable_trigger) != PGRES_COMMAND_OK) {
+        printf("Erro ao reativar trigger de inserção no log!\n");
+    }
+
     PQclear(res);
     PQclear(redo);
-
+    PQclear(disable_trigger);
+    PQclear(enable_trigger);
 }

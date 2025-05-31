@@ -58,7 +58,7 @@ SELECT 'UPDATE', id, nome, saldo, :txid FROM clientes_em_memoria WHERE id = 2;
 
 ROLLBACK; 
 
--- Inserts fora do rollback para não sofrerem rollback
+-- Inserts no log fora do rollback para não sofrerem rollback
 INSERT INTO log (operacao, id_cliente, nome, saldo, transacao_id) 
 VALUES ('INSERT', currval('clientes_em_memoria_id_seq'), 'Lucas Silva', 250.00, :txid);
 
