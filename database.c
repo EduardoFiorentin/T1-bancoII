@@ -73,30 +73,27 @@ void make_redo(PGconn *conn) {
     nfields = PQnfields(res);
     nrows = PQntuples(res);
 
-    
+    printf("Report de dados atualizados: \n");
+    printf("Operação\tId\tNome\t\tSaldo\n");
     for (i = 0; i < nrows; i++) {
 
         if (strcmp(PQgetvalue(res, i, STATUS), "committed") == 0) {
             
             if (strcmp(PQgetvalue(res, i, OPERATION), "INSERT") == 0) {
                 sprintf(query, "INSERT INTO clientes_em_memoria (id, nome, saldo) VALUES ('%s', '%s', '%s');", PQgetvalue(res, i, ID_CLIENT), PQgetvalue(res, i, NAME), PQgetvalue(res, i, BALANCE));
-                // printf("%s\t\t", query);
                 resQuery = PQexec(conn, query);
-                printf("INSERT: %s\n", PQresStatus(PQresultStatus(resQuery)));
+                printf("INSERT\t\t%s\t%s\t%s\n", PQgetvalue(res, i, ID_CLIENT), PQgetvalue(res, i, NAME), PQgetvalue(res, i, BALANCE));
             }
             else if (strcmp(PQgetvalue(res, i, OPERATION), "UPDATE") == 0) {
                 sprintf(query, "UPDATE clientes_em_memoria SET id='%s', nome='%s', saldo='%s' where id='%s';", PQgetvalue(res, i, ID_CLIENT), PQgetvalue(res, i, NAME), PQgetvalue(res, i, BALANCE), PQgetvalue(res, i, ID_CLIENT));
-                // printf("%s\t\t", query);
                 resQuery = PQexec(conn, query);
-                printf("UPDATE: %s\n", PQresStatus(PQresultStatus(resQuery)));
+                printf("UPDATE\t\t%s\t%s\t%s\n", PQgetvalue(res, i, ID_CLIENT), PQgetvalue(res, i, NAME), PQgetvalue(res, i, BALANCE));
 
             }
             else if (strcmp(PQgetvalue(res, i, OPERATION), "DELETE") == 0) {
                 sprintf(query, "DELETE FROM clientes_em_memoria WHERE id='%s';", PQgetvalue(res, i, ID_CLIENT));
-                // printf("%s\t\t", query);
                 resQuery = PQexec(conn, query);
-                printf("DELETE: %s\n", PQresStatus(PQresultStatus(resQuery)));
-
+                printf("DELETE\t\t%s\t%s\t%s\n", PQgetvalue(res, i, ID_CLIENT), PQgetvalue(res, i, NAME), PQgetvalue(res, i, BALANCE)); 
             }
         }
     }

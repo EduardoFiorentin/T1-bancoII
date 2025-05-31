@@ -1,4 +1,5 @@
-
+-- recria tabelas e trigger
+ 
 drop trigger tg_insert_log on clientes_em_memoria;
 drop function insert_log;
 delete from log;
@@ -42,10 +43,3 @@ $$ language plpgsql;
 create trigger tg_insert_log
 before insert or update or delete on clientes_em_memoria
 for each row execute procedure insert_log();
-
-
-
--- ANTES
-
-
--- DEPOIS 
